@@ -13,10 +13,12 @@ public:
     Board();  // Constructor
     void Draw();  // Draw the board
     void InitializePieces();  // Initialize pieces
+    void HandleMouseEvents();  // Handle mouse events
 
 private:
     std::vector<Square> squares;  // Vector to store squares
     std::vector<ChessPiece*> pieces;  // Vector to store pieces
+    ChessPiece* selectedPiece;  // Track the selected piece
 };
 
 

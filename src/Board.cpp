@@ -1,7 +1,8 @@
 #include "Board.h"
 #include "Pieces.h"
+#include "raylib.h"
 
-Board::Board() {
+Board::Board() : selectedPiece(nullptr) {
     for (int row = 0; row < numSquares; row++) {
         for (int col = 0; col < numSquares; col++) {
             Color color = ((row + col) % 2 == 0) ? LIGHTGRAY : DARKGRAY;
@@ -63,4 +64,27 @@ void Board::InitializePieces() {
     pieces.push_back(new Rook({1050, 0}, "assets/images/b_rook_png_128px.png"));
 }
 
+void Board::HandleMouseEvents() {
+    Vector2 mousePosition = GetMousePosition();
+
+    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        // Check if a piece is selected
+        for (auto& piece : pieces) {
+            if (piece->IsMouseOver(mousePosition)) {
+                selectedPiece = piece;
+                break;
+            }
+        }
+    }
+
+    if (IsMouseButtonDown(MOUSE_LEFT_BUTTON) && selectedPiece) {
+        // Update the position of the selected piece
+        selectedPiece->SetPosition(mousePosition);
+    }
+
+    if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON) && selectedPiece) {
+        // Drop the piece
+        selectedPiece = nullptr;
+    }
+}
 

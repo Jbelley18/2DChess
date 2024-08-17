@@ -9,6 +9,8 @@ public:
     virtual ~ChessPiece();
 
     virtual void Draw() = 0;  // Pure virtual function
+    bool IsMouseOver(Vector2 mousePosition);  // Check if mouse is over the piece
+    void SetPosition(Vector2 position);  // Set the position of the piece
 
 protected:
     Vector2 position;

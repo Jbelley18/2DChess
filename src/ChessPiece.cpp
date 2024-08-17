@@ -1,10 +1,18 @@
 #include "ChessPiece.h"
 
-ChessPiece::ChessPiece(Vector2 position, const char* texturePath)
-    : position(position) {
-    texture = LoadTexture(texturePath);  // Load the texture from the given path
+ChessPiece::ChessPiece(Vector2 position, const char* texturePath) : position(position) {
+    texture = LoadTexture(texturePath);
 }
 
 ChessPiece::~ChessPiece() {
-    UnloadTexture(texture);  // Unload the texture when the piece is destroyed
+    UnloadTexture(texture);
+}
+
+bool ChessPiece::IsMouseOver(Vector2 mousePosition) {
+    return (mousePosition.x >= position.x && mousePosition.x <= position.x + texture.width &&
+            mousePosition.y >= position.y && mousePosition.y <= position.y + texture.height);
+}
+
+void ChessPiece::SetPosition(Vector2 newPosition) {
+    position = newPosition;
 }
