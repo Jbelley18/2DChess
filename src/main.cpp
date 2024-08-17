@@ -13,6 +13,8 @@ int main() {
     board.InitializePieces();  // Initialize pieces on the board
 
     while (!WindowShouldClose()) {
+        board.HandleMouseEvents();  // Handle mouse events
+
         BeginDrawing();
         ClearBackground(RAYWHITE);
 

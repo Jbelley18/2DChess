@@ -1,6 +1,7 @@
 #include "Board.h"
 #include "Pieces.h"
 #include "raylib.h"
+#include <iostream>
 
 Board::Board() : selectedPiece(nullptr) {
     for (int row = 0; row < numSquares; row++) {
@@ -68,23 +69,27 @@ void Board::HandleMouseEvents() {
     Vector2 mousePosition = GetMousePosition();
 
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-        // Check if a piece is selected
+        std::cout << "Mouse left button pressed at position: (" << mousePosition.x << ", " << mousePosition.y << ")\n";
         for (auto& piece : pieces) {
             if (piece->IsMouseOver(mousePosition)) {
                 selectedPiece = piece;
+                std::cout << "Piece selected\n";
                 break;
             }
         }
     }
 
     if (IsMouseButtonDown(MOUSE_LEFT_BUTTON) && selectedPiece) {
-        // Update the position of the selected piece
-        selectedPiece->SetPosition(mousePosition);
+        std::cout << "Mouse left button held down, moving piece\n";
+        selectedPiece->SetPosition({mousePosition.x - Board::squareSize / 2, mousePosition.y - Board::squareSize / 2});
     }
 
     if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON) && selectedPiece) {
-        // Drop the piece
+        std::cout << "Mouse left button released, snapping piece to nearest square\n";
+        // Snap the piece to the nearest square
+        int newX = static_cast<int>(mousePosition.x / Board::squareSize) * Board::squareSize;
+        int newY = static_cast<int>(mousePosition.y / Board::squareSize) * Board::squareSize;
+        selectedPiece->SetPosition({static_cast<float>(newX), static_cast<float>(newY)});
         selectedPiece = nullptr;
     }
 }
-
