@@ -22,7 +22,6 @@ void Board::Draw() {
     }
 }
 
-
 void Board::InitializePieces() {
     // Initialize white pawns
     pieces.push_back(new Pawn({0, 900}, "assets/images/w_pawn_png_128px.png"));
@@ -65,31 +64,28 @@ void Board::InitializePieces() {
     pieces.push_back(new Rook({1050, 0}, "assets/images/b_rook_png_128px.png"));
 }
 
-void Board::HandleMouseEvents() {
+void Board::HandleMouseEvents(Sound moveSound) {
     Vector2 mousePosition = GetMousePosition();
 
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-        std::cout << "Mouse left button pressed at position: (" << mousePosition.x << ", " << mousePosition.y << ")\n";
         for (auto& piece : pieces) {
             if (piece->IsMouseOver(mousePosition)) {
                 selectedPiece = piece;
-                std::cout << "Piece selected\n";
                 break;
             }
         }
     }
 
     if (IsMouseButtonDown(MOUSE_LEFT_BUTTON) && selectedPiece) {
-        std::cout << "Mouse left button held down, moving piece\n";
         selectedPiece->SetPosition({mousePosition.x - Board::squareSize / 2, mousePosition.y - Board::squareSize / 2});
     }
 
     if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON) && selectedPiece) {
-        std::cout << "Mouse left button released, snapping piece to nearest square\n";
         // Snap the piece to the nearest square
         int newX = static_cast<int>(mousePosition.x / Board::squareSize) * Board::squareSize;
         int newY = static_cast<int>(mousePosition.y / Board::squareSize) * Board::squareSize;
         selectedPiece->SetPosition({static_cast<float>(newX), static_cast<float>(newY)});
+        PlaySound(moveSound);  // Play the sound when the piece is placed
         selectedPiece = nullptr;
     }
 }

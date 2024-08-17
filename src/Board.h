@@ -4,6 +4,7 @@
 #include "Square.h"
 #include <vector>
 #include "Pawn.h"  // Include this if you need to work with pieces in the Board class
+#include "raylib.h"  // Include raylib for Sound
 
 class Board {
 public:
@@ -13,13 +14,12 @@ public:
     Board();  // Constructor
     void Draw();  // Draw the board
     void InitializePieces();  // Initialize pieces
-    void HandleMouseEvents();  // Handle mouse events
+    void HandleMouseEvents(Sound moveSound);  // Handle mouse events with sound
 
 private:
     std::vector<Square> squares;  // Vector to store squares
     std::vector<ChessPiece*> pieces;  // Vector to store pieces
     ChessPiece* selectedPiece;  // Track the selected piece
 };
-
 
 #endif // BOARD_H
