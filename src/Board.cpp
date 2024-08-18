@@ -25,24 +25,24 @@ void Board::Draw() {
 
 void Board::InitializePieces() {
     // Initialize white pawns
-    pieces.push_back(new Pawn({0, 900}, "assets/images/w_pawn_png_128px.png"));
-    pieces.push_back(new Pawn({150, 900}, "assets/images/w_pawn_png_128px.png"));
-    pieces.push_back(new Pawn({300, 900}, "assets/images/w_pawn_png_128px.png"));
-    pieces.push_back(new Pawn({450, 900}, "assets/images/w_pawn_png_128px.png"));
-    pieces.push_back(new Pawn({600, 900}, "assets/images/w_pawn_png_128px.png"));
-    pieces.push_back(new Pawn({750, 900}, "assets/images/w_pawn_png_128px.png"));
-    pieces.push_back(new Pawn({900, 900}, "assets/images/w_pawn_png_128px.png"));
-    pieces.push_back(new Pawn({1050, 900}, "assets/images/w_pawn_png_128px.png"));
+    pieces.push_back(new Pawn({0, 900}, "assets/images/w_pawn_png_128px.png", true));
+    pieces.push_back(new Pawn({150, 900}, "assets/images/w_pawn_png_128px.png", true));
+    pieces.push_back(new Pawn({300, 900}, "assets/images/w_pawn_png_128px.png", true));
+    pieces.push_back(new Pawn({450, 900}, "assets/images/w_pawn_png_128px.png", true));
+    pieces.push_back(new Pawn({600, 900}, "assets/images/w_pawn_png_128px.png", true));
+    pieces.push_back(new Pawn({750, 900}, "assets/images/w_pawn_png_128px.png", true));
+    pieces.push_back(new Pawn({900, 900}, "assets/images/w_pawn_png_128px.png", true));
+    pieces.push_back(new Pawn({1050, 900}, "assets/images/w_pawn_png_128px.png", true));
 
     // Initialize black pawns
-    pieces.push_back(new Pawn({0, 150}, "assets/images/b_pawn_png_128px.png"));
-    pieces.push_back(new Pawn({150, 150}, "assets/images/b_pawn_png_128px.png"));
-    pieces.push_back(new Pawn({300, 150}, "assets/images/b_pawn_png_128px.png"));
-    pieces.push_back(new Pawn({450, 150}, "assets/images/b_pawn_png_128px.png"));
-    pieces.push_back(new Pawn({600, 150}, "assets/images/b_pawn_png_128px.png"));
-    pieces.push_back(new Pawn({750, 150}, "assets/images/b_pawn_png_128px.png"));
-    pieces.push_back(new Pawn({900, 150}, "assets/images/b_pawn_png_128px.png"));
-    pieces.push_back(new Pawn({1050, 150}, "assets/images/b_pawn_png_128px.png"));
+    pieces.push_back(new Pawn({0, 150}, "assets/images/b_pawn_png_128px.png", false));
+    pieces.push_back(new Pawn({150, 150}, "assets/images/b_pawn_png_128px.png", false));
+    pieces.push_back(new Pawn({300, 150}, "assets/images/b_pawn_png_128px.png", false));
+    pieces.push_back(new Pawn({450, 150}, "assets/images/b_pawn_png_128px.png", false));
+    pieces.push_back(new Pawn({600, 150}, "assets/images/b_pawn_png_128px.png", false));
+    pieces.push_back(new Pawn({750, 150}, "assets/images/b_pawn_png_128px.png", false));
+    pieces.push_back(new Pawn({900, 150}, "assets/images/b_pawn_png_128px.png", false));
+    pieces.push_back(new Pawn({1050, 150}, "assets/images/b_pawn_png_128px.png", false));
 
     // Initialize white back row (Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook)
     pieces.push_back(new Rook({0, 1050}, "assets/images/w_rook_png_128px.png"));

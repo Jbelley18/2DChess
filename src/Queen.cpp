@@ -6,23 +6,23 @@ Queen::Queen(Vector2 position, const std::string& texturePath)
 std::vector<Vector2> Queen::GetLegalMoves(const std::vector<ChessPiece*>& pieces) const {
     std::vector<Vector2> legalMoves;
 
-    // Horizontal, vertical, and diagonal moves
+    // Queen moves horizontally, vertically, and diagonally
     int directions[8][2] = {
         {1, 0}, {-1, 0}, {0, 1}, {0, -1},
-        {1, 1}, {-1, 1}, {1, -1}, {-1, -1}
+        {1, 1}, {-1, -1}, {1, -1}, {-1, 1}
     };
+
     for (auto& direction : directions) {
-        Vector2 move = position;
-        while (true) {
-            move.x += direction[0] * Board::squareSize;
-            move.y += direction[1] * Board::squareSize;
-            if (IsOccupied(move, pieces)) {
-                if (IsOccupiedByOpponent(move, pieces)) {
-                    legalMoves.push_back(move);
+        for (int i = 1; i < 8; ++i) {
+            Vector2 newPosition = {position.x + direction[0] * i * Board::squareSize, position.y + direction[1] * i * Board::squareSize};
+            if (IsOccupied(newPosition, pieces)) {
+                if (IsOccupiedByOpponent(newPosition, pieces)) {
+                    legalMoves.push_back(newPosition);
                 }
                 break;
+            } else {
+                legalMoves.push_back(newPosition);
             }
-            legalMoves.push_back(move);
         }
     }
 

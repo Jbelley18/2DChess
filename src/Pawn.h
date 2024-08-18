@@ -7,12 +7,13 @@
 
 class Pawn : public ChessPiece {
 public:
-    Pawn(Vector2 position, const std::string& texturePath);
+    Pawn(Vector2 position, const std::string& texturePath, bool isWhite);
     std::vector<Vector2> GetLegalMoves(const std::vector<ChessPiece*>& pieces) const override;
 
 private:
     bool IsOccupied(Vector2 position, const std::vector<ChessPiece*>& pieces) const;
     bool IsOccupiedByOpponent(Vector2 position, const std::vector<ChessPiece*>& pieces) const;
+    bool isWhite;
 };
 
 #endif // PAWN_H
