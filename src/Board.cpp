@@ -2,6 +2,7 @@
 #include "Pieces.h"
 #include "raylib.h"
 #include <iostream>
+#include <algorithm>
 
 Board::Board() : selectedPiece(nullptr) {
     for (int row = 0; row < numSquares; row++) {
@@ -63,29 +64,67 @@ void Board::InitializePieces() {
     pieces.push_back(new Knight({900, 0}, "assets/images/b_knight_png_128px.png"));
     pieces.push_back(new Rook({1050, 0}, "assets/images/b_rook_png_128px.png"));
 }
-
-void Board::HandleMouseEvents(Sound moveSound) {
-    Vector2 mousePosition = GetMousePosition();
-
-    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-        for (auto& piece : pieces) {
-            if (piece->IsMouseOver(mousePosition)) {
-                selectedPiece = piece;
-                break;
-            }
+bool Board::IsOccupied(Vector2 position) const {
+    for (const auto& piece : pieces) {
+        if (piece->GetPosition().x == position.x && piece->GetPosition().y == position.y) {
+            return true;
         }
     }
+    return false;
+}
 
-    if (IsMouseButtonDown(MOUSE_LEFT_BUTTON) && selectedPiece) {
-        selectedPiece->SetPosition({mousePosition.x - Board::squareSize / 2, mousePosition.y - Board::squareSize / 2});
+bool Board::IsOccupiedByOpponent(Vector2 position, bool isWhite) const {
+    for (const auto& piece : pieces) {
+        if (piece->GetPosition().x == position.x && piece->GetPosition().y == position.y) {
+            return piece->IsWhite() != isWhite;
+        }
     }
+    return false;
+}
 
-    if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON) && selectedPiece) {
-        // Snap the piece to the nearest square
-        int newX = static_cast<int>(mousePosition.x / Board::squareSize) * Board::squareSize;
-        int newY = static_cast<int>(mousePosition.y / Board::squareSize) * Board::squareSize;
-        selectedPiece->SetPosition({static_cast<float>(newX), static_cast<float>(newY)});
-        PlaySound(moveSound);  // Play the sound when the piece is placed
-        selectedPiece = nullptr;
+void Board::HandleMouseEvents() {
+    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        std::cout << "Mouse left button pressed.\n";
+        Vector2 mousePosition = GetMousePosition();
+        std::pair<int, int> boardPosition = {static_cast<int>(mousePosition.x / squareSize), static_cast<int>(mousePosition.y / squareSize)};
+
+        std::cout << "Mouse position: (" << mousePosition.x << ", " << mousePosition.y << ")\n";
+        std::cout << "Board position: (" << boardPosition.first << ", " << boardPosition.second << ")\n";
+
+        if (selectedPiece) {
+            std::cout << "A piece is already selected.\n";
+            std::vector<Vector2> legalMoves = selectedPiece->GetLegalMoves(pieces);
+            std::cout << "Legal moves calculated:\n";
+            std::vector<std::pair<int, int>> legalMovesGrid;
+            for (const auto& move : legalMoves) {
+                std::pair<int, int> moveGrid = {static_cast<int>(move.x / squareSize), static_cast<int>(move.y / squareSize)};
+                legalMovesGrid.push_back(moveGrid);
+                std::cout << "Legal move: (" << moveGrid.first << ", " << moveGrid.second << ")\n";
+            }
+            if (std::find(legalMovesGrid.begin(), legalMovesGrid.end(), boardPosition) != legalMovesGrid.end()) {
+                selectedPiece->SetPosition(Vector2{static_cast<float>(boardPosition.first * squareSize), static_cast<float>(boardPosition.second * squareSize)});
+                selectedPiece = nullptr;
+                std::cout << "Piece moved to: (" << boardPosition.first << ", " << boardPosition.second << ")\n";
+            } else {
+                selectedPiece = nullptr;
+                std::cout << "Invalid move. Piece deselected.\n";
+            }
+        } else {
+            std::cout << "No piece is currently selected.\n";
+            std::cout << "Current pieces on the board:\n";
+            for (auto& piece : pieces) {
+                Vector2 piecePosition = piece->GetPosition();
+                std::pair<int, int> pieceBoardPosition = {static_cast<int>(piecePosition.x / squareSize), static_cast<int>(piecePosition.y / squareSize)};
+                std::cout << "Piece at: (" << pieceBoardPosition.first << ", " << pieceBoardPosition.second << ")\n";
+                if (pieceBoardPosition.first == boardPosition.first && pieceBoardPosition.second == boardPosition.second) {
+                    selectedPiece = piece;
+                    std::cout << "Piece selected at: (" << boardPosition.first << ", " << boardPosition.second << ")\n";
+                    break;
+                }
+            }
+            if (!selectedPiece) {
+                std::cout << "No piece found at the clicked position.\n";
+            }
+        }
     }
 }

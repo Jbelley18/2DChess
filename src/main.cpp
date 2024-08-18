@@ -16,7 +16,7 @@ int main() {
     Sound moveSound = LoadSound("Assets/Audio/move-self.mp3");  // Load the sound file
 
     while (!WindowShouldClose()) {
-        board.HandleMouseEvents(moveSound);  // Handle mouse events and pass the sound
+        board.HandleMouseEvents();  // Corrected function call
 
         BeginDrawing();
         ClearBackground(RAYWHITE);

@@ -2,19 +2,25 @@
 #define CHESSPIECE_H
 
 #include "raylib.h"
+#include <string>
+#include <vector>
 
 class ChessPiece {
 public:
-    ChessPiece(Vector2 position, const char* texturePath);
+    ChessPiece(Vector2 position, const std::string& texturePath);
     virtual ~ChessPiece();
-
-    virtual void Draw() = 0;  // Pure virtual function
-    bool IsMouseOver(Vector2 mousePosition);  // Check if mouse is over the piece
-    void SetPosition(Vector2 position);  // Set the position of the piece
+    virtual void Draw() const;
+    virtual std::vector<Vector2> GetLegalMoves(const std::vector<ChessPiece*>& pieces) const = 0;
+    Vector2 GetPosition() const;
+    void SetPosition(Vector2 newPosition);
+    bool IsWhite() const;
+    bool IsOpponent(const ChessPiece* other) const;  // Add this method
 
 protected:
     Vector2 position;
-    Texture2D texture;  // Texture for the piece
+    Texture2D texture;
+    bool isWhite;
+    Color color;
 };
 
 #endif // CHESSPIECE_H

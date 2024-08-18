@@ -1,25 +1,27 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#include "Square.h"
 #include <vector>
-#include "Pawn.h"  // Include this if you need to work with pieces in the Board class
-#include "raylib.h"  // Include raylib for Sound
+#include "Square.h"
+#include "ChessPiece.h"
+#include "raylib.h"
 
 class Board {
 public:
-    static const int squareSize = 150;  // Updated square size
-    static const int numSquares = 8;
+    Board();
+    void Draw();
+    void InitializePieces();
+    bool IsOccupied(Vector2 position) const;
+    bool IsOccupiedByOpponent(Vector2 position, bool isWhite) const;
+    void HandleMouseEvents();
 
-    Board();  // Constructor
-    void Draw();  // Draw the board
-    void InitializePieces();  // Initialize pieces
-    void HandleMouseEvents(Sound moveSound);  // Handle mouse events with sound
+    static const int squareSize = 150;  // Define the square size
 
 private:
-    std::vector<Square> squares;  // Vector to store squares
-    std::vector<ChessPiece*> pieces;  // Vector to store pieces
-    ChessPiece* selectedPiece;  // Track the selected piece
+    std::vector<Square> squares;
+    std::vector<ChessPiece*> pieces;
+    ChessPiece* selectedPiece;
+    static const int numSquares = 8;  // Assuming an 8x8 board
 };
 
 #endif // BOARD_H

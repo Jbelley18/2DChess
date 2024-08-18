@@ -1,14 +1,41 @@
 #include "King.h"
-#include "Board.h" 
 
-King::King(Vector2 position, const char* texturePath)
+King::King(Vector2 position, const std::string& texturePath)
     : ChessPiece(position, texturePath) {}
 
-void King::Draw() {
-    float scale = 1.0f;  // No scaling needed if using 128px textures in 150px squares
-    Vector2 adjustedPosition = { 
-        position.x + (Board::squareSize - texture.width * scale) / 2,
-        position.y + (Board::squareSize - texture.height * scale) / 2 
+std::vector<Vector2> King::GetLegalMoves(const std::vector<ChessPiece*>& pieces) const {
+    std::vector<Vector2> legalMoves;
+
+    // King moves
+    int moves[8][2] = {
+        {1, 0}, {-1, 0}, {0, 1}, {0, -1},
+        {1, 1}, {-1, 1}, {1, -1}, {-1, -1}
     };
-    DrawTextureEx(texture, adjustedPosition, 0.0f, scale, WHITE);  // Draw the King texture
+
+    for (auto& move : moves) {
+        Vector2 newPosition = {position.x + move[0] * Board::squareSize, position.y + move[1] * Board::squareSize};
+        if (!IsOccupied(newPosition, pieces) || IsOccupiedByOpponent(newPosition, pieces)) {
+            legalMoves.push_back(newPosition);
+        }
+    }
+
+    return legalMoves;
+}
+
+bool King::IsOccupied(Vector2 position, const std::vector<ChessPiece*>& pieces) const {
+    for (const auto& piece : pieces) {
+        if (piece->GetPosition().x == position.x && piece->GetPosition().y == position.y) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool King::IsOccupiedByOpponent(Vector2 position, const std::vector<ChessPiece*>& pieces) const {
+    for (const auto& piece : pieces) {
+        if (piece->GetPosition().x == position.x && piece->GetPosition().y == position.y) {
+            return this->IsOpponent(piece);
+        }
+    }
+    return false;
 }

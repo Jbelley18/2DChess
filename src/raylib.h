@@ -206,6 +206,12 @@ typedef struct Vector2 {
     float y;                // Vector y component
 } Vector2;
 
+// Define the equality operator outside the struct
+inline bool operator==(const Vector2& lhs, const Vector2& rhs) {
+    return (lhs.x == rhs.x) && (lhs.y == rhs.y);
+}
+    
+    bool Vector2Equals(Vector2 v1, Vector2 v2);
 // Vector3, 3 components
 typedef struct Vector3 {
     float x;                // Vector x component
